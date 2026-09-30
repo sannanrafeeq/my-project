@@ -7,7 +7,7 @@ function App() {
 
   // GET users
   const getUsers = () => {
-    fetch("http://localhost:3000/api/users")
+    fetch("https://my-project-backend-umber.vercel.app/api/users")
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -25,13 +25,13 @@ function App() {
 
   // POST user
   const createUser = () => {
-    fetch("http://localhost:3000/api/users", {
+    fetch("https://my-project-backend-umber.vercel.app/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        name: name,
+        name: name,s
         age: Number(age)
       })
     })
