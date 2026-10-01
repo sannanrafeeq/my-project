@@ -31,7 +31,7 @@ function App() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        name: name,s
+        name: name,
         age: Number(age)
       })
     })
