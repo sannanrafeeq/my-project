@@ -1,16 +1,19 @@
 const mongoose = require("mongoose");
 
-const MONGODB_URI =
-  "mongodb+srv://sannanrafeeq839_db_user:YOUR_PASSWORD@cluster0.0nsqaux.mongodb.net/mydatabase?appName=Cluster0";
+// MongoDB Atlas connection
+const MONGODB_URI = process.env.MONGODB_URI;
 
+// User schema
 const userSchema = new mongoose.Schema({
   name: String,
-  age: Number
+  age: Number,
 });
 
+// User model
 const User =
   mongoose.models.User || mongoose.model("User", userSchema);
 
+// MongoDB connection
 async function connectDB() {
   if (mongoose.connection.readyState === 1) {
     return;
@@ -19,18 +22,26 @@ async function connectDB() {
   await mongoose.connect(MONGODB_URI);
 }
 
+// API
 module.exports = async (req, res) => {
   // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type"
+  );
 
-  // OPTIONS
+  // OPTIONS request
   if (req.method === "OPTIONS") {
     return res.status(204).end();
   }
 
   try {
+    // Connect MongoDB
     await connectDB();
 
     // GET users
@@ -46,25 +57,26 @@ module.exports = async (req, res) => {
 
       const user = await User.create({
         name: name,
-        age: Number(age)
+        age: Number(age),
       });
 
       return res.status(201).json({
         message: "User created successfully",
-        user: user
+        user: user,
       });
     }
 
+    // Other methods
     return res.status(405).json({
-      message: "Method not allowed"
+      message: "Method not allowed",
     });
 
   } catch (error) {
-    console.log(error);
+    console.log("ERROR:", error);
 
     return res.status(500).json({
       message: "Server error",
-      error: error.message
+      error: error.message,
     });
   }
 };
